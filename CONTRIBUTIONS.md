@@ -5,8 +5,11 @@ This guide outlines the recommended workflow for contributing new features or fi
 Before you can contribute to a repository on GitHub, you need to set up your development environment. Follow these steps to get started:
 
 1. Install Git on your local machine.
-2. Clone the repository you want to contribute to using `git clone [repository url]`.
-3. Create a new branch for your feature or fix using `git checkout -b [branch-name]`.
+2. Clone the repository you want to contribute to using `git clone [repository url]`.  
+3. Create a new branch for your feature or fix using `git checkout -b [follow the guide below]`. Example: `git checkout -b brandonbiondo/feature-login-page`
+    - Naming your branch (Make sure to follow this format): `<username>/<feature>-name-of-feature`.
+    - Naming your branch (Make sure to follow this format): `<username>/<bug>-name-of-bug`.
+    - Naming your branch (Make sure to follow this format): `<username>/<comment>-name-of-comment`.
 
 ### Working on Your Branch
 Once you've set up your environment and created a new branch, you can start working on your changes. Here are some best practices to follow when working on your branch:
