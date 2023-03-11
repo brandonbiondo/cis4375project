@@ -10,15 +10,21 @@
             <v-toolbar-items>
                 <v-btn flat>
                     <div class="d-flex mr-1">
-                        <v-icon icon="mdi-cart"></v-icon>
+                        <v-icon icon="mdi-login"></v-icon>
                     </div>
-                    <span>Manage Inventory</span>
+                    <span>Login</span>
                 </v-btn>
                 <v-btn flat>
                     <div class="d-flex mr-1">
                         <v-icon icon="mdi-account-tie"></v-icon>
                     </div>
-                    <span>Manage Employees</span>
+                    <span>Call Now</span>
+                </v-btn>
+                <v-btn flat>
+                    <div class="d-flex mr-1">
+                        <v-icon icon="mdi-directions"></v-icon>
+                    </div>
+                    <span>Get Directions</span>
                 </v-btn>
                 <v-btn flat>
                     <div class="d-flex mr-1">
