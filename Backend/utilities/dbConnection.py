@@ -1,15 +1,32 @@
-# Importing SQLAlchemy Engine
-from sqlalchemy import create_engine
 import os
-import pymysql
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
+from models.models import Base
 
-# Python Function to connect to the DB
-# Return SQLAlchemy Object
+load_dotenv()
+
 def connect_to_db():
-	try:
-		print(f"Connection to the {os.environ.get('host')} for user {os.environ.get('user')} created successfully.")	
-		return create_engine(
-			url=f"mysql+pymysql://{os.environ.get('user')}:{os.environ.get('password')}@{os.environ.get('host')}:{os.environ.get('port')}/{os.environ.get('database')}"
-		)
-	except Exception as ex:
-		print("Connection could not be made due to the following error: \n", ex)
+    user = os.environ.get('user')
+    password = os.environ.get('password')
+    host = os.environ.get('host')
+    port = os.environ.get('port')
+    database = os.environ.get('database')
+    
+    try:
+        engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}')    
+        # Creating an inspector to check for existing tables
+        inspector = inspect(engine)
+        existing_tables = inspector.get_table_names()
+        
+        # Create tables if they don't exist
+        for table_name in Base.metadata.tables.keys():
+            if table_name not in existing_tables:
+                Base.metadata.tables[table_name].create(bind=engine)
+    # Prints error if can't connect            
+    except Exception as e:
+        print(f"Error connecting to Database: {e}")
+        engine = None
+    return engine
+
+engine = connect_to_db()
