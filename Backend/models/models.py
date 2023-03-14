@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, Numeric
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, Numeric, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import MetaData
 from passlib.hash import bcrypt
 from dotenv import load_dotenv
 
@@ -30,7 +29,7 @@ class Product(Base):
     product_price = Column(Integer)
 
     vendor = relationship("Vendor", back_populates="products")
-    categories = relationship("Category", back_populates="product")
+    category = relationship("Category", back_populates="product")
     inventory = relationship("Inventory", back_populates="product")
     reorder = relationship("Reorder", back_populates="product")
 

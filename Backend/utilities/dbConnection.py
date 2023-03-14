@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
+from sqlalchemy.orm import sessionmaker
 from models.models import Base
 
 load_dotenv()
@@ -15,6 +16,9 @@ def connect_to_db():
     
     try:
         engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}')    
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
         # Creating an inspector to check for existing tables
         inspector = inspect(engine)
         existing_tables = inspector.get_table_names()
@@ -23,10 +27,9 @@ def connect_to_db():
         for table_name in Base.metadata.tables.keys():
             if table_name not in existing_tables:
                 Base.metadata.tables[table_name].create(bind=engine)
-    # Prints error if can't connect            
+
+        return engine, session
+
     except Exception as e:
         print(f"Error connecting to Database: {e}")
-        engine = None
-    return engine
-
-engine = connect_to_db()
+        return None, None
