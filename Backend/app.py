@@ -1,16 +1,17 @@
+from flask import Flask, jsonify
 from dotenv import load_dotenv
-from flask import Flask
-from utilities.dbConnection import engine
-from models.models import Base
+from crudops.restapi import bp
 
 load_dotenv()
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
 
+app.register_blueprint(bp)
 
 @app.route('/')
-def hello():
-    return f"Hello World"
+def default():
+    return 'Hello World'
 
 if __name__ == '__main__':
     app.run()
