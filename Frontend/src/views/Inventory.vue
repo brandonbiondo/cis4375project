@@ -14,11 +14,19 @@ export default {
         formatNumber(num) {
             return parseFloat(num).toFixed(2)
         },
+        updateQuantity(item) {
+            const inventoryIndex = this.inventory.findIndex(function (i) {
+                return i.name === item.name;
+            });
+            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
+            this.inventory.splice(inventoryIndex, 1, item)
+        },
         addQuantity(item) {
             const inventoryIndex = this.inventory.findIndex(function (i) {
                 return i.name === item.name;
             });
             item.item_quantity++
+            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
             this.inventory.splice(inventoryIndex, 1, item)
         },
         removeQuantity(item) {
@@ -26,6 +34,7 @@ export default {
                 return i.name === item.name;
             });
             item.item_quantity--
+            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
             this.inventory.splice(inventoryIndex, 1, item)
         },
         //This would be an item id when the endpoint is created. In the endpoint we then check the quantity to the reorder quantity
@@ -43,15 +52,18 @@ export default {
             for (let prod of data) {
                 let invIndex = inventoryResponse.data.findIndex(item => prod.product_id === item.product_id);
                 let vendorIndex = vendorResponse.data.findIndex(item => prod.vendor_id === item.vendor_id);
+                if (invIndex == -1 || vendorIndex == -1) {
+                    console.log("Not showing product because a matching inventory and/or vendor could not be found")
+                    continue
+                }
                 let newProd = { ...prod, ...inventoryResponse.data[invIndex], ...vendorResponse.data[vendorIndex] };
-                console.log(newProd)
                 combinedProducts.push(newProd)
             }
             this.inventory = combinedProducts
             this.inventoryLoaded = true
         }
     },
-    async mounted() {
+    async created() {
         await this.getProducts()
     }
 }
@@ -104,7 +116,7 @@ export default {
                                             <div style="width:250px">
 
                                                 <v-text-field density="compact" variant="underlined" persistent-hint
-                                                    hint="Quantity" v-model="item.item_quantity">
+                                                    hint="Quantity" v-model="item.item_quantity" @change="updateQuantity(item)">
                                                     <template v-slot:append>
                                                         <v-btn @click="addQuantity(item)" variant="text">
                                                             <v-icon color="blue">
