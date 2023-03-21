@@ -7,7 +7,11 @@ export default {
     data() {
         return {
             inventory: [],
-            inventoryLoaded: false
+            products: [],
+            stores: [],
+            vendors: [],
+            inventoryLoaded: false,
+            dialog: false,
         }
     },
     methods: {
@@ -18,7 +22,7 @@ export default {
             const inventoryIndex = this.inventory.findIndex(function (i) {
                 return i.name === item.name;
             });
-            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
+            axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
             this.inventory.splice(inventoryIndex, 1, item)
         },
         addQuantity(item) {
@@ -26,7 +30,7 @@ export default {
                 return i.name === item.name;
             });
             item.item_quantity++
-            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
+            axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
             this.inventory.splice(inventoryIndex, 1, item)
         },
         removeQuantity(item) {
@@ -34,7 +38,17 @@ export default {
                 return i.name === item.name;
             });
             item.item_quantity--
-            axios.put('http://localhost:5000/inventory', item, {params  : {"inventory_id" : item.inventory_id}})
+            axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
+            this.inventory.splice(inventoryIndex, 1, item)
+        },
+        updateInventory(item) {
+            const inventoryIndex = this.inventory.findIndex(function (i) {
+                return i.name === item.name;
+            });
+            console.log(inventoryIndex)
+            console.log("hello")
+            axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
+            axios.put('http://localhost:5000/products', item, { params: { "product_id": item.product_id } })
             this.inventory.splice(inventoryIndex, 1, item)
         },
         //This would be an item id when the endpoint is created. In the endpoint we then check the quantity to the reorder quantity
@@ -47,21 +61,28 @@ export default {
             const productsResponse = await axios.get('http://localhost:5000/products')
             const inventoryResponse = await axios.get('http://localhost:5000/inventory')
             const vendorResponse = await axios.get('http://localhost:5000/vendor')
+            const categoryResponse = await axios.get('http://localhost:5000/category')
+            const storeResponse = await axios.get('http://localhost:5000/store')
             let data = productsResponse.data
             let combinedProducts = []
             for (let prod of data) {
                 let invIndex = inventoryResponse.data.findIndex(item => prod.product_id === item.product_id);
                 let vendorIndex = vendorResponse.data.findIndex(item => prod.vendor_id === item.vendor_id);
+                let categoryIndex = categoryResponse.data.findIndex(item => prod.product_id === item.product_id);
                 if (invIndex == -1 || vendorIndex == -1) {
                     console.log("Not showing product because a matching inventory and/or vendor could not be found")
                     continue
                 }
-                let newProd = { ...prod, ...inventoryResponse.data[invIndex], ...vendorResponse.data[vendorIndex] };
+                let storeIndex = storeResponse.data.findIndex(item => inventoryResponse.data[invIndex].store_id === item.store_id);
+                let newProd = { ...prod, ...inventoryResponse.data[invIndex], ...vendorResponse.data[vendorIndex], ...categoryResponse.data[categoryIndex],  ...storeResponse.data[storeIndex]};
                 combinedProducts.push(newProd)
             }
             this.inventory = combinedProducts
             this.inventoryLoaded = true
-        }
+            this.stores = storeResponse.data
+            this.vendors = vendorResponse.data
+            this.products = productsResponse.data
+        },
     },
     async created() {
         await this.getProducts()
@@ -106,7 +127,7 @@ export default {
                                     </v-card-subtitle>
                                     <v-card-subtitle>
                                         <span>
-                                            {{ item.category }}
+                                            {{ item.category_name }}
                                         </span>
                                     </v-card-subtitle>
                                 </v-col>
@@ -116,7 +137,8 @@ export default {
                                             <div style="width:250px">
 
                                                 <v-text-field density="compact" variant="underlined" persistent-hint
-                                                    hint="Quantity" v-model="item.item_quantity" @change="updateQuantity(item)">
+                                                    hint="Quantity" v-model="item.item_quantity"
+                                                    @change="updateQuantity(item)">
                                                     <template v-slot:append>
                                                         <v-btn @click="addQuantity(item)" variant="text">
                                                             <v-icon color="blue">
@@ -174,9 +196,57 @@ export default {
                                         </div>
                                     </div>
                                 </v-card-text>
-                                <v-btn variant="text" color="blue" icon="mdi-pencil">
-
-                                </v-btn>
+                                <v-dialog v-model="dialog" persistent width="1024">
+                                    <template v-slot:activator="{ props }">
+                                        <v-btn variant="text" color="blue" icon="mdi-pencil" v-bind="props">
+                                        </v-btn>
+                                    </template>
+                                    <v-card>
+                                        <v-card-title>
+                                            <span class="text-h5">Edit Product</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-container>
+                                                <v-row>
+                                                    <v-col cols="12" sm="6" md="4">
+                                                        <v-text-field persistent-hint hint="Product Name" v-model="item.product_name" required></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" md="4">
+                                                        <v-text-field v-model="item.product_description" persistent-hint
+                                                            hint="Product Desciprtion"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" md="4">
+                                                        <v-text-field v-model="item.category_name"
+                                                            hint="Item Category" persistent-hint
+                                                            ></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6">
+                                                        <v-autocomplete
+                                                            :items="this.stores" item-title="store_name"
+                                                            v-model="item.store_name"
+                                                            hint="Store" persistent-hint multiple> </v-autocomplete>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6">
+                                                        <v-autocomplete
+                                                            v-model="item.vendor_name"
+                                                            :items="this.vendors"
+                                                            item-title="vendor_name"
+                                                            hint="Vendor"  persistent-hint multiple></v-autocomplete>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="blue-darken-1" variant="text" @click="(dialog = false)">
+                                                Close
+                                            </v-btn>
+                                            <v-btn color="blue-darken-1" variant="text" @click="(dialog = false),updateInventory(item)">
+                                                Save
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
                             </div>
                         </v-card>
                     </v-col>
