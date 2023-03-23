@@ -26,7 +26,7 @@ class Product(Base):
     vendor_id = Column(Integer, ForeignKey('vendor.vendor_id'))
     product_name = Column(String(50))
     product_description = Column(String(50))
-    product_price = Column(Integer)
+    product_price = Column(Numeric(precision=10, scale=2, asdecimal=True))
 
     vendor = relationship("Vendor", back_populates="products")
     category = relationship("Category", back_populates="product")
@@ -94,7 +94,7 @@ class Inventory(Base):
     store_id = Column(Integer, ForeignKey('store.store_id'))
     item_name = Column(String(50))
     item_quantity = Column(Integer)
-    inventory_value = Column(Numeric(8,2))
+    inventory_value = Column(Numeric(precision=10, scale=2, asdecimal=True))
 
     product = relationship("Product", back_populates="inventory")
     store = relationship("Store", back_populates="inventory")
