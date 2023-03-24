@@ -42,8 +42,11 @@ export default {
         updateQuantity(item) {
             axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
         },
+        async updateCurrency(index) {
+            const item = this.inventory[index]
+            await axios.put('http://localhost:5000/products', item, { params: { "product_id": item.product_id } })
+        },
         async addQuantity(item) {
-            console.log(this.inventory)
             const inventoryIndex = this.inventory.findIndex(function (i) {
                 return i.name === item.name;
             });
@@ -209,8 +212,8 @@ export default {
 
                                         <v-card-text>
                                             <div class="d-flex">
-                                                <v-text-field hide-details :label="formatNumber(item.product_price)"
-                                                    density="compact" variant="plain">
+                                                <v-text-field hide-details
+                                                    density="compact" variant="plain" v-model="item.product_price" @keydown.enter.prevent="updateCurrency(index)">
                                                     <template v-slot:prepend>
                                                         <v-icon color="green-darken-1"> mdi-currency-usd </v-icon>
                                                     </template>
