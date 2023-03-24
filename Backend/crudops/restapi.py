@@ -111,9 +111,11 @@ def add_products():
     product_price = request.json['product_price']
     vendor_id = request.json['vendor_id']
     add_products_sql = f"INSERT INTO products (product_name, product_description, product_price, vendor_id) VALUES ('{product_name}', '{product_description}', {product_price}, {vendor_id})"
-    session.execute(text(add_products_sql)) # execute the sql code from above and commit the changes using the next line 
+    result = session.execute(text(add_products_sql)) # execute the sql code from above and commit the changes using the next line 
     session.commit()
-    return 'Add request was successful'  # reciept
+    inserted_product = request.json
+    inserted_product["product_id"] = result.lastrowid
+    return inserted_product # reciept
     # This endpoint will allow the user to POST a new record into the products table of the sql database.
 
 # update the products with PUT
@@ -344,8 +346,12 @@ def add_inventory():
     product_id = request.json['product_id']
     store_id = request.json['store_id']
     add_invenotry_sql = f"INSERT INTO inventory (item_name, item_quantity, inventory_value, product_id, store_id) VALUES ('{item_name}', '{item_quantity}', '{inventory_value}', '{product_id}', '{store_id}')"
-    session.execute(text(add_invenotry_sql)) # execute the sql code from above and commit the changes using the next line 
+    result = session.execute(text(add_invenotry_sql)) # execute the sql code from above and commit the changes using the next line 
     session.commit()
+    inserted_inventory = request.json
+    inserted_inventory["inventory_id"] = result.lastrowid
+    return inserted_inventory # reciept
+ 
     return 'Add request was successful'  # reciept
     # This endpoint will allow the user to POST new inventory into the invenotry table of the sql database.
 
@@ -419,9 +425,11 @@ def add_reorder():
     product_id = request.json['product_id']
     inventory_id = request.json['inventory_id']
     add_reorder_sql = f"INSERT INTO reorder (reorder_level, reorder_time_in_days, quantity_in_reorder, product_id, inventory_id) VALUES ('{reorder_level}', '{reorder_time_in_days}', '{quantity_in_reorder}', '{product_id}', '{inventory_id}')"
-    session.execute(text(add_reorder_sql)) # execute the sql code from above and commit the changes using the next line 
+    result = session.execute(text(add_reorder_sql)) # execute the sql code from above and commit the changes using the next line 
     session.commit()
-    return 'Add request was successful'  # reciept
+    new_reorder = request.json
+    new_reorder["reorder_id"] = result.lastrowid
+    return new_reorder # reciept
     # This endpoint will allow the user to POST new reorder info into the reorder table of the sql database.
 
 # update the reorder info with PUT
@@ -454,6 +462,7 @@ def delete_reorder():
     session.execute(text(delete_reorder_sql))
     session.commit()
     return 'Delete request was successful'  # receipt
+
 
 #
 #
@@ -488,9 +497,12 @@ def add_category():
     category_name = request.json['category_name']
     product_id = request.json['product_id']
     add_category_sql = f"INSERT INTO category (category_name, product_id) VALUES ('{category_name}', '{product_id}')"
-    session.execute(text(add_category_sql)) # execute the sql code from above and commit the changes using the next line 
+    result = session.execute(text(add_category_sql)) # execute the sql code from above and commit the changes using the next line G
     session.commit()
-    return 'Add request was successful'  # reciept
+    new_category = request.json
+    new_category["category_id"] = result.lastrowid
+    
+    return new_category  # reciept
     # This endpoint will allow the user to POST a new category into the category table of the sql database.
 
 # update the category info with PUT
@@ -516,9 +528,20 @@ def delete_category():
     else:
         return 'ERROR: No ID provided!'  # error message
     engine, session = connect_to_db()
+    print(category_id)
     delete_category_sql = f"DELETE FROM category WHERE category_id = '{category_id}'"  # sql code to delete a category using its ID
+    print(delete_category_sql)
     session.execute(text(delete_category_sql))
     session.commit()
     return 'Delete request was successful'  # receipt
 
+
+#get products combined with inventory, vendor, category, and store
+@bp.route('/combined_products', methods=["GET"])
+def get_combined_products():
+    engine, session = connect_to_db()
+    combined_products = session.execute(text(("SELECT * FROM products p INNER JOIN inventory i ON p.product_id = i.product_id INNER JOIN vendor v ON v.vendor_id = p.vendor_id INNER JOIN category c ON c.product_id = p.product_id INNER JOIN store s ON s.store_id = i.store_id INNER JOIN reorder r ON r.product_id = p.product_id ORDER BY p.product_id"))).all()
+    combined_products_list = [dict(c._mapping) for c in combined_products]
+            
+    return jsonify(combined_products_list)
 # all endpoints are working and have been tested with postman
