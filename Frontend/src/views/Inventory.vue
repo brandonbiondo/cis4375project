@@ -1,5 +1,4 @@
 <script>
-import { ref } from 'vue'
 import axios from 'axios'
 export default {
     setup() {
@@ -15,6 +14,7 @@ export default {
             editDialog: false,
             newDialog: false,
             editId: null,
+            search: "",
             newForm : {
                 product_name: "",
                 item_name: "",
@@ -71,14 +71,13 @@ export default {
         },
         updateInventoryDialog(id){
           this.editDialog = true;
-          this.editId = id;
+          this.editId = this.inventory.findIndex(x => x.product_id === this.filteredInventory[id].product_id)
         },
         async updateInventory(item) {
             const store_id = this.stores.find(i => item.store_name === i.store_name).store_id;
             const vendor_id = this.vendors.find(i => item.vendor_name === i.vendor_name).vendor_id;
             item.vendor_id = vendor_id
             item.store_id = store_id
-            item.category_id = category_id
             axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
             axios.put('http://localhost:5000/products', item, { params: { "product_id": item.product_id } })
         },
@@ -130,16 +129,25 @@ export default {
             this.vendors = vendorResponse.data
             this.categories = categoryResponse.data
         },
+        filteredindex(item) {
+            return this.inventory.find(x => x.product_id = item.product_id);
+        }
     },
     async created() {
         await this.getProducts()
-    }
+    },
+    computed: {
+        filteredInventory() {
+            return this.inventory.filter(p => {
+                return p.product_name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            })},
+    },
 }
-</script>fF
+</script>
 
 <template>
     <div class="d-flex align-self-center mt-3" id="searchDiv">
-        <v-text-field prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
+        <v-text-field v-model="search" prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
     </div>
     <div class="d-flex justify-center" v-if="!inventoryLoaded">
         <v-progress-circular indeterminate model-value="20"></v-progress-circular>
@@ -147,7 +155,7 @@ export default {
     <div class="d-flex" v-if="this.inventory.length != 0">
         <v-card max-width="1000px" class="mx-auto">
             <v-container>
-                <v-row dense v-for="(item, index) in inventory">
+                <v-row dense v-for="(item, index) in filteredInventory">
                     <v-col cols="12">
                         <v-card elevation="3" min-width="800px" min-height="200px" max-height="400px">
                             <v-row>
