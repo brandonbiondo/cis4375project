@@ -135,7 +135,7 @@ export default {
         await this.getProducts()
     }
 }
-</script>fF
+</script>
 
 <template>
     <div class="d-flex align-self-center mt-3" id="searchDiv">
