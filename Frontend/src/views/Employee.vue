@@ -23,8 +23,8 @@
       </thead>
       <tbody>
         <tr v-for="employee in employees" :key="index">
-          <td>{{ employee.employee_firstName }}</td>
-          <td>{{ employee.employee_lastName }}</td>
+          <td>{{ employee.employee_firstname }}</td>
+          <td>{{ employee.employee_lastname }}</td>
           <td>{{ employee.employee_phone }}</td>
           <td>{{ employee.employee_role }}</td>
           <td>{{ employee.employee_address }}</td>
@@ -44,6 +44,7 @@
 
 
 <script>
+import axios from"axios"
 export default {
   data() {
     return {
@@ -117,7 +118,7 @@ export default {
   const index=this.employees.findIndex((employee)=>employee.employee_firstName
   ===this.editingEmployee.employee-firstName && employee.employee_lastName===
   this.editingEmployee.employee_lastName);
-  if(index>0){
+  if(index>0){ 
   this.employees.splice(index, 1, this.editingEmployee);
   this.dialog=false;
   this.editingEmployee=null;
@@ -127,6 +128,10 @@ export default {
   this.employees.splice(index,1);
   },
   },
+  async mounted(){
+  const employeeData = await axios.get('http://localhost:5000/employees')
+  console.log(employeeData.data)
+  this.employees=employeeData.data}
 };
 </script>
 
