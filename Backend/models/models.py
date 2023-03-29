@@ -21,7 +21,6 @@ class Vendor(Base):
 
 class Product(Base):
     __tablename__ = 'products'
-
     product_id = Column(Integer, primary_key=True, autoincrement=True)
     vendor_id = Column(Integer, ForeignKey('vendor.vendor_id'))
     product_name = Column(String(50))
@@ -77,15 +76,22 @@ class Login(Base):
     employee = relationship("Employee", back_populates="login")
 
     # Password encrpytion
-    def password(self):
-        return self.login_password
-    
-    def set_password(self, password):
-        hashed_password = bcrypt.hash(password.encode('utf-8'))
-        self.login_password = hashed_password.decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.login_password.encode('utf-8'))
+    def __init__(self, employee_id, login_username, login_password):
+        self.employee_id = employee_id
+        self.login_username = login_username
+        # Encrypting and storing password in login_password
+        self.login_password = bcrypt.hash(login_password)
+        
+    # Comparing plaintext and encrypted password using bcrypt.verify    
+    def check_password(self, login_password):
+        password_matched = bcrypt.verify(login_password, self.login_password)
+        # If password verified
+        if password_matched:
+            print('Password was hashed')
+        else:
+        # If password not verified
+            print('Password was not hashed')
+        return password_matched
 
 class Inventory(Base):
     __tablename__ = 'inventory'
@@ -108,5 +114,6 @@ class Reorder(Base):
     reorder_level = Column(Integer)
     reorder_time_in_days = Column(Integer)
     quantity_in_reorder = Column(Integer)
+    
     product = relationship("Product", back_populates="reorder")
     inventory = relationship("Inventory", back_populates="reorder")
