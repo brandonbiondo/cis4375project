@@ -281,8 +281,8 @@ def add_login():
 
     # returns JSON response with new login information and 201 code
     return jsonify({
-        'employee_id': new_login.employee_id,
         'login_id': new_login.login_id,
+        'employee_id': new_login.employee_id,
         'login_username': new_login.login_username
     }), 201
 #
