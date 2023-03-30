@@ -287,7 +287,7 @@ def add_login():
     }), 201
 
 @bp.route('/login', methods=['PUT'])
-def update_username():
+def update_login():
     engine, session = connect_to_db()
     data = request.get_json()
     employee_id = data.get('employee_id')
