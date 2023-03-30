@@ -285,6 +285,35 @@ def add_login():
         'employee_id': new_login.employee_id,
         'login_username': new_login.login_username
     }), 201
+
+@bp.route('/login', methods=['PUT'])
+def update_username():
+    engine, session = connect_to_db()
+    data = request.get_json()
+    employee_id = data.get('employee_id')
+    username = data.get('login_username')
+    password = data.get('login_password')
+
+    login = session.query(Login).filter(Login.employee_id == employee_id). first()
+
+    # if login is not found return a 404 error
+    if not login:
+        abort(404)
+    # update username if in request
+    if username:
+        login.login_username = username
+    # update password if in request
+    if password:
+        hashed_password = bcrypt.hash(password)
+        login.login_password = hashed_password
+
+    session.commit()
+    return jsonify({
+        'login_id': login.login_id,
+        'employee_id': login.employee_id,
+        'login_username': login.login_username
+    }), 200
+
 #
 #
 #
