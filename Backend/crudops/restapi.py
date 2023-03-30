@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, abort
 from dotenv import load_dotenv
 from sqlalchemy import text
 from utilities.dbConnection import connect_to_db
@@ -228,6 +228,91 @@ def delete_employees():
     session.execute(text(delete_employee_sql))
     session.commit()
     return 'Delete request was successful'  # receipt
+
+#
+#
+#
+# Login CRUD Operations
+#
+#
+#
+
+#endpoint to retrieve user login information using GET
+@bp.route('/login', methods=['GET'])
+def get_login():
+    engine, session = connect_to_db()
+    logins = session.query(Login).all()
+    if logins:
+        login_list = [
+            {
+                'employee_id': login.employee_id,
+                'login_id': login.login_id,
+                'login_username': login.login_username
+            }
+            for login in logins
+        ]
+        return jsonify(login_list)
+    else:
+        return jsonify({'error': 'Login(s) not found'}), 404
+    
+# endpoint to add login as POST
+@bp.route('/login', methods=['POST'])
+def add_login():
+    # connect to the DB
+    engine, session = connect_to_db()
+    # login information from request
+    data = request.get_json()
+    employee_id = data.get('employee_id')
+    username = data.get('login_username')
+    password = data.get('login_password')
+
+    # query database for employee with given ID
+    employee = session.query(Employee).get(employee_id)
+
+    # if employee is not found, return a 404 error
+    if not employee:
+        abort(404)
+    
+    # creates a new login object
+    new_login = Login(employee_id=employee_id, login_username=username, login_password=password)
+
+    session.add(new_login)
+    session.commit()
+
+    # returns JSON response with new login information and 201 code
+    return jsonify({
+        'login_id': new_login.login_id,
+        'employee_id': new_login.employee_id,
+        'login_username': new_login.login_username
+    }), 201
+
+@bp.route('/login', methods=['PUT'])
+def update_login():
+    engine, session = connect_to_db()
+    data = request.get_json()
+    employee_id = data.get('employee_id')
+    username = data.get('login_username')
+    password = data.get('login_password')
+
+    login = session.query(Login).filter(Login.employee_id == employee_id). first()
+
+    # if login is not found return a 404 error
+    if not login:
+        abort(404)
+    # update username if in request
+    if username:
+        login.login_username = username
+    # update password if in request
+    if password:
+        hashed_password = bcrypt.hash(password)
+        login.login_password = hashed_password
+
+    session.commit()
+    return jsonify({
+        'login_id': login.login_id,
+        'employee_id': login.employee_id,
+        'login_username': login.login_username
+    }), 200
 
 #
 #
