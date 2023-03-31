@@ -15,7 +15,7 @@
                 </div>
                 <span>Inventory</span>
               </v-btn >
-              <v-btn variant="text" v-if="isLoggedIn">
+              <v-btn variant="text" v-if="isLoggedIn" :to="{name: 'Employee'}">
                 <div class="d-flex mr-1">
                   <v-icon icon="mdi-account-tie"></v-icon>
                 </div>
