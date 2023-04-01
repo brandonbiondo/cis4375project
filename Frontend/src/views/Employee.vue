@@ -7,7 +7,40 @@
       class="mb3-"
       dense
     ></v-text-field>
-    <v-btn color="success" @click="newDialog = true">Add New Employee</v-btn>
+    <v-btn color="success" @click="newDialog = true" class="ml-5">Add New Employee</v-btn>
+    <v-btn color="primary" class="ml-5" @click="newAccountDialog = true">Create Account</v-btn>
+    <v-dialog v-model="newAccountDialog" max-width="600">
+      <v-card>
+        <v-card-title>Create New Account</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <!-- Form fields for new employee details (First Name, Last Name, etc.) -->
+              <v-col>
+                <v-text-field v-model="newLogin.login_username" label="Username"></v-text-field>
+              </v-col>
+
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="newLogin.login_password" label="Password"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-autocomplete return-object item-title="employee_firstname"  v-model="newLogin.employee" :items="this.employees">
+
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-1" text @click="newAccountDialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="createNewAccount">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1 style="color: blue;">Employees Page</h1>
     <v-table>
       <thead>
@@ -20,7 +53,7 @@
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -130,6 +163,11 @@
                 <v-text-field v-model="this.employees[editId].employee_enddate" label="End Date"></v-text-field>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col>
+                <v-btn @click="deleteLogin(editId)" color="error">Delete Login</v-btn>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -143,6 +181,8 @@
 
 <script>
 import axios from "axios";
+import {useLoginStore} from "../stores/login";
+
 export default {
   data() {
     return {
@@ -171,8 +211,14 @@ employee_role: '',
 employee_address: '',
 employee_startdate: '',
 employee_enddate: '',
-  editId: null,
 },
+      newLogin: {
+        employee: null,
+        login_username: null,
+        login_password: null,
+      },
+      editId: null,
+      newAccountDialog: false,
 };
 },
 methods: {
@@ -199,14 +245,24 @@ this.dialog = false;
 this.editingEmployee = null;
 },
 deleteEmployee(index) {
-
-axios.delete("http://localhost:5000/employees", {params: {"employee_id": this.filteredEmployees[index].employee_id}})
-  this.employees.splice(index, 1);
+  this.editId = this.employees.findIndex(x => x.employee_firstname === this.filteredEmployees[index].employee_firstname)
+  axios.delete("http://localhost:5000/employees", {params: {"employee_id": this.employees[this.editId].employee_id}})
+  this.employees.splice(this.editId, 1);
 },
-saveNewEmployee() {
-this.employees.push(this.newEmployee);
+  createNewAccount() {
+      this.newLogin["employee_id"] = this.newLogin.employee.employee_id
+      console.log(this.newLogin)
+  axios.post("http://localhost:5000/login", this.newLogin)
+    this.newAccountDialog = false;
+  },
+  deleteLogin() {
+    axios.delete("http://localhost:5000/login", {params: {"employee_id": this.employees[this.editId].employee_id}})
+  },
+async saveNewEmployee() {
+
 this.newDialog = false;
-  axios.post("http://localhost:5000/employees", this.newEmployee)
+  const response = await axios.post("http://localhost:5000/employees", this.newEmployee)
+  this.employees.push(response.data);
 this.newEmployee = {
 employee_firstName: '',
 employee_lastName: '',
@@ -216,7 +272,6 @@ employee_address: '',
 employee_startDate: '',
 employee_endDate: '',
 };
-
 },
 },
   computed: {
@@ -226,8 +281,13 @@ employee_endDate: '',
       })},
   },
 async mounted() {
-const employeeData = await axios.get('http://localhost:5000/employees');
-this.employees = employeeData.data;
+  const loginStore = useLoginStore();
+
+  const employeeData = await axios.get('http://localhost:5000/employees');
+  this.employees = employeeData.data;
+  await loginStore.fetchLogins();
+
+
 },
 };
 </script>

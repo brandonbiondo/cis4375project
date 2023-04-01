@@ -33,6 +33,7 @@
           >
             Login
           </v-btn>
+          <v-progress-circular v-if="loading" indeterminate model-value="20" class="ml-5"></v-progress-circular>
           <span class="font-weight-bold pl-2" v-if="loginSuccess != null && loginSuccess === false">Login Failed</span>
         </v-container>
 
@@ -63,6 +64,7 @@ export default {
       dialog: false,
       loggedIn: false,
       loginSuccess: null,
+      loading: false,
     }
   },
   methods: {
@@ -73,7 +75,9 @@ export default {
           await loginStore.logout()
          this.dialog = false;
        } else {
+         this.loading = true;
          const loginSuccess = await loginStore.login(this.username, this.password);
+         this.loading = false;
          if (!loginSuccess) {
            this.loginSuccess = false;
          } else {

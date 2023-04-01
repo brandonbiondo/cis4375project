@@ -191,9 +191,11 @@ def add_employees():
     employee_startdate = request.json['employee_startdate']
     employee_enddate = request.json['employee_enddate']
     add_employees_sql = f"INSERT INTO employees (employee_firstname, employee_lastname, employee_address, employee_phone, employee_role, employee_startdate, employee_enddate) VALUES ('{employee_firstname}', '{employee_lastname}', '{employee_address}', '{employee_phone}', '{employee_role}', '{employee_startdate}', '{employee_enddate}')"
-    session.execute(text(add_employees_sql)) # execute the sql code from above and commit the changes using the next line 
+    result = session.execute(text(add_employees_sql)) # execute the sql code from above and commit the changes using the next line
+    employee_dict = request.json
     session.commit()
-    return 'Add request was successful'  # reciept
+    employee_dict["employee_id"] = result.lastrowid
+    return employee_dict # returning the recently insereted employee with its id
     # This endpoint will allow the user to POST a new employee into the employees table of the sql database.
 
 # update the employees with PUT
@@ -286,6 +288,31 @@ def add_login():
         'login_username': new_login.login_username
     }), 201
 
+@bp.route("/login", methods=["DELETE"])
+def delete_login():
+    engine, session = connect_to_db()
+    if 'employee_id' in request.args: 
+        employee_id = request.args['employee_id']  # get specific id for desired employee to delete
+    else:
+        return 'ERROR: No ID provided!'  # error message
+    engine, session = connect_to_db()
+    delete_employee_sql = f"DELETE FROM login WHERE employee_id = '{employee_id}'"  # sql code to delete a employee using their ID
+    session.execute(text(delete_employee_sql))
+    session.commit()
+    return 'Delete request was successful'  # receipt
+
+
+
+# checks if login is authorized
+@bp.route('/check_login', methods=['POST'])
+def check_login():
+    engine, session = connect_to_db()
+    data = request.get_json()
+    login = session.query(Login).filter(Login.login_username == data["login_username"]).first()
+    if not login:
+        abort(404)
+    return jsonify({"authorized": login.check_password(data["login_password"])})
+
 @bp.route('/login', methods=['PUT'])
 def update_login():
     engine, session = connect_to_db()
@@ -313,6 +340,7 @@ def update_login():
         'employee_id': login.employee_id,
         'login_username': login.login_username
     }), 200
+
 
 #
 #
@@ -613,9 +641,7 @@ def delete_category():
     else:
         return 'ERROR: No ID provided!'  # error message
     engine, session = connect_to_db()
-    print(category_id)
     delete_category_sql = f"DELETE FROM category WHERE category_id = '{category_id}'"  # sql code to delete a category using its ID
-    print(delete_category_sql)
     session.execute(text(delete_category_sql))
     session.commit()
     return 'Delete request was successful'  # receipt
