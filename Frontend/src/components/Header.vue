@@ -15,13 +15,13 @@
                 </div>
                 <span>Inventory</span>
               </v-btn >
-              <v-btn variant="text" v-if="isLoggedIn">
+              <v-btn variant="text" v-if="isLoggedIn" :to="{name: 'Employee'}">
                 <div class="d-flex mr-1">
                   <v-icon icon="mdi-account-tie"></v-icon>
                 </div>
                 <span>Employees</span>
               </v-btn >
-              <v-btn v-if="isLoggedIn">
+              <v-btn v-if="isLoggedIn" :to="{name: 'Vendor'}">
                 <div class="d-flex mr-1">
                   <v-icon icon="mdi-cart"></v-icon>
                 </div>

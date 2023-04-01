@@ -62,12 +62,13 @@ export default {
             await axios.put('http://localhost:5000/inventory', item, { params: { "inventory_id": item.inventory_id } })
         },
         async deleteInventory(index) {
-            const item = this.inventory[index]
+            this.editId = this.inventory.findIndex(x => x.product_id === this.filteredInventory[index].product_id)
+            const item = this.inventory[this.editId]
             await axios.delete("http://localhost:5000/category", {params: {"category_id": item.category_id}})
             await axios.delete("http://localhost:5000/reorder", {params: {"reorder_id": item.reorder_id}})
             await axios.delete("http://localhost:5000/inventory", {params: {"inventory_id": item.inventory_id}})
             await axios.delete("http://localhost:5000/products", {params: {"product_id": item.product_id}})
-            this.inventory.splice(index, 1)
+            this.inventory.splice(this.editId, 1)
         },
         updateInventoryDialog(id){
           this.editDialog = true;

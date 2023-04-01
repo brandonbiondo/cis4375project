@@ -1,13 +1,42 @@
 <template>
   <div>
-    <v-text-field
-      v-model="search"
-      label="Search"
-      prepend-inner-icon="mdi-magnify"
-      class="mb3-"
-      dense
-    ></v-text-field>
-    <v-btn color="success" @click="dialog = true">Add New Employee</v-btn>
+    <div class="d-flex align-self-center mt-3 justify-center" id="searchDiv">
+      <v-text-field v-model="search" prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
+    </div>
+    <v-btn color="success" @click="newDialog = true" class="ml-5">Add New Employee</v-btn>
+    <v-btn color="primary" class="ml-5" @click="newAccountDialog = true">Create Account</v-btn>
+    <v-dialog v-model="newAccountDialog" max-width="600">
+      <v-card>
+        <v-card-title>Create New Account</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <!-- Form fields for new employee details (First Name, Last Name, etc.) -->
+              <v-col>
+                <v-text-field v-model="newLogin.login_username" label="Username"></v-text-field>
+              </v-col>
+
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field  :type="'password'" v-model="newLogin.login_password" label="Password"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-autocomplete label="Employee" return-object item-title="employee_firstname"  v-model="newLogin.employee" :items="this.employees">
+
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-1" text @click="newAccountDialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="createNewAccount">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1 style="color: blue;">Employees Page</h1>
     <v-table>
       <thead>
@@ -20,24 +49,24 @@
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(employee, index) in employees" :key="index">
-          <td>{{ employee.employee_firstName }}</td>
-          <td>{{ employee.employee_lastName }}</td>
+        <tr v-for="(employee, index) in filteredEmployees" :key="index">
+          <td>{{ employee.employee_firstname }}</td>
+          <td>{{ employee.employee_lastname }}</td>
           <td>{{ employee.employee_phone }}</td>
           <td>{{ employee.employee_role }}</td>
           <td>{{ employee.employee_address }}</td>
-          <td>{{ employee.employee_startDate }}</td>
-          <td>{{ employee.employee_endDate }}</td>
+          <td>{{ employee.employee_startdate }}</td>
+          <td>{{ employee.employee_enddate }}</td>
           <td>
             <v-icon v-if="!employee.employee_endDate" color="green">mdi-check</v-icon>
             <v-icon v-else color="red">mdi-close</v-icon>
           </td>
           <td>
-            <v-btn color="primary" @click="editEmployee(employee)">Edit</v-btn>
+            <v-btn color="primary" @click="editEmployeeDialog(index)">Edit</v-btn>
             <v-btn color="error" @click="deleteEmployee(index)">Delete</v-btn>
           </td>
         </tr>
@@ -45,26 +74,101 @@
     </v-table>
 
     <!-- Dialog for adding a new employee -->
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="newDialog" max-width="2000">
       <v-card>
         <v-card-title>Add New Employee</v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <!-- Form fields for new employee details (First Name, Last Name, etc.) -->
-              <v-text-field v-model="newEmployee.employee_firstName" label="First Name"></v-text-field>
-              <v-text-field v-model="newEmployee.employee_lastName" label="Last Name"></v-text-field>
+              <v-col>
+
+
+              <v-text-field v-model="newEmployee.employee_firstname" label="First Name"></v-text-field>
+              </v-col>
+              <v-col>
+
+
+              <v-text-field v-model="newEmployee.employee_lastname" label="Last Name"></v-text-field>
+              </v-col>
+              <v-col>
               <v-text-field v-model="newEmployee.employee_phone" label="Phone"></v-text-field>
-              <v-text-field v-model="newEmployee.employee_role" label="Role"></v-text-field>
-              <v-text-field v-model="newEmployee.employee_address" label="Address"></v-text-field>
-              <v-text-field v-model="newEmployee.employee_startDate" label="Start Date"></v-text-field>
-              <v-text-field v-model="newEmployee.employee_endDate" label="End Date"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="newEmployee.employee_role" label="Role"></v-text-field>
+
+
+
+              </v-col>
+              <v-col>
+                <v-text-field v-model="newEmployee.employee_address" label="Address"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="newEmployee.employee_startdate" label="Start Date"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="newEmployee.employee_enddate" label="End Date"></v-text-field>
+              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="newDialog = false">Close</v-btn>
           <v-btn color="blue darken-1" text @click="saveNewEmployee">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- Dialog for editing an employee -->
+    <v-dialog v-model="editDialog" max-width="2000">
+      <v-card>
+        <v-card-title>Edit Employee</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <!-- Form fields for new employee details (First Name, Last Name, etc.) -->
+              <v-col>
+
+
+                <v-text-field v-model="this.employees[editId].employee_firstname" label="First Name"></v-text-field>
+              </v-col>
+              <v-col>
+
+
+                <v-text-field v-model="this.employees[editId].employee_lastname" label="Last Name"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="this.employees[editId].employee_phone" label="Phone"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="this.employees[editId].employee_role" label="Role"></v-text-field>
+
+
+
+              </v-col>
+              <v-col>
+                <v-text-field v-model="this.employees[editId].employee_address" label="Address"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="this.employees[editId].employee_startdate" label="Start Date"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="this.employees[editId].employee_enddate" label="End Date"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn @click="deleteLogin(editId)" color="error">Delete Login</v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-1" text @click="editDialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="editEmployee(this.employees[editId])">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -73,6 +177,8 @@
 
 <script>
 import axios from "axios";
+import {useLoginStore} from "../stores/login";
+
 export default {
   data() {
     return {
@@ -86,71 +192,41 @@ export default {
 { text: 'End Date', value: 'employee_endDate' },
 { text: '', value: 'actions', sortable: false },
 ],
-employees: [
-{
-employee_firstName: 'Elizabeth',
-employee_lastName: 'Oyewale',
-employee_phone: '832 629-0177',
-employee_role: 'Owner/Manager',
-employee_address: 'Redclove avenue 2000',
-employee_startDate: '2022-06-01',
-employee_endDate: '',
-},
-{
-      employee_firstName: 'Steven',
-      employee_lastName: 'Oyewale',
-      employee_phone: '832 567-9029',
-      employee_role: 'Assistant Manager',
-      employee_address: 'Redclove avenue 2000',
-      employee_startDate: '2022-06-01',
-      employee_endDate: '',
-    },
-    {
-      employee_firstName: 'Alice',
-      employee_lastName: 'Oyebefun',
-      employee_phone: '832 835-7227',
-      employee_role: 'Cashier',
-      employee_address: 'Redclove Avenue 2000',
-      employee_startDate: '2022-06-01',
-      employee_endDate: '',
-    },
-    {
-      employee_firstName: 'Cruz',
-      employee_lastName: 'Martinez',
-      employee_phone: '832 257-7439',
-      employee_role: 'Stocker',
-      employee_address: 'Willow Dr 1527',
-      employee_startDate: '2022-06-10',
-      employee_endDate: '',
-    },
-    {
-      employee_firstName: 'Maria',
-      employee_lastName: 'Garza',
-      employee_phone: '832 282-2758',
-      employee_role: 'Cleaner',
-      employee_address: 'Overbrook Ln 1950',
-      employee_startDate: '2022-06-10',
-      employee_endDate: '',
-    },
-  ],
+      employees: [],
+      search: "",
 
-dialog: false,
+
+editDialog: false,
+      newDialog: false,
 editingEmployee: null,
 newEmployee: {
-employee_firstName: '',
-employee_lastName: '',
+employee_firstname: '',
+employee_lastname: '',
 employee_phone: '',
 employee_role: '',
 employee_address: '',
-employee_startDate: '',
-employee_endDate: '',
+employee_startdate: '',
+employee_enddate: '',
 },
+      newLogin: {
+        employee: null,
+        login_username: null,
+        login_password: null,
+      },
+      editId: null,
+      newAccountDialog: false,
 };
 },
 methods: {
-editEmployee(employee) {
-this.editingEmployee = { ...employee };
-this.dialog = true;
+    editEmployeeDialog(index) {
+      this.editDialog = true;
+      this.editId = this.employees.findIndex(x => x.employee_firstname === this.filteredEmployees[index].employee_firstname)
+    },
+editEmployee(item) {
+  this.employees.splice(this.editId, 1, item)
+  console.log(item)
+  axios.put("http://localhost:5000/employees", item, {params: {"employee_id" :item.employee_id}})
+  this.editDialog = false;
 },
 saveEmployee() {
 const index = this.employees.findIndex(
@@ -165,11 +241,24 @@ this.dialog = false;
 this.editingEmployee = null;
 },
 deleteEmployee(index) {
-this.employees.splice(index, 1);
+  this.editId = this.employees.findIndex(x => x.employee_firstname === this.filteredEmployees[index].employee_firstname)
+  axios.delete("http://localhost:5000/employees", {params: {"employee_id": this.employees[this.editId].employee_id}})
+  this.employees.splice(this.editId, 1);
 },
-saveNewEmployee() {
-this.employees.push(this.newEmployee);
-this.dialog = false;
+  createNewAccount() {
+      this.newLogin["employee_id"] = this.newLogin.employee.employee_id
+      console.log(this.newLogin)
+  axios.post("http://localhost:5000/login", this.newLogin)
+    this.newAccountDialog = false;
+  },
+  deleteLogin() {
+    axios.delete("http://localhost:5000/login", {params: {"employee_id": this.employees[this.editId].employee_id}})
+  },
+async saveNewEmployee() {
+
+this.newDialog = false;
+  const response = await axios.post("http://localhost:5000/employees", this.newEmployee)
+  this.employees.push(response.data);
 this.newEmployee = {
 employee_firstName: '',
 employee_lastName: '',
@@ -181,10 +270,20 @@ employee_endDate: '',
 };
 },
 },
+  computed: {
+    filteredEmployees() {
+      return this.employees.filter(p => {
+        return p.employee_firstname.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+      })},
+  },
 async mounted() {
-const employeeData = await axios.get('http://localhost:5000/employees');
-console.log(employeeData.data);
-this.employees = employeeData.data;
+  const loginStore = useLoginStore();
+
+  const employeeData = await axios.get('http://localhost:5000/employees');
+  this.employees = employeeData.data;
+  await loginStore.fetchLogins();
+
+
 },
 };
 </script>
