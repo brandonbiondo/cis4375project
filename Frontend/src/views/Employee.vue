@@ -1,12 +1,8 @@
 <template>
   <div>
-    <v-text-field
-      v-model="search"
-      label="Search"
-      prepend-inner-icon="mdi-magnify"
-      class="mb3-"
-      dense
-    ></v-text-field>
+    <div class="d-flex align-self-center mt-3 justify-center" id="searchDiv">
+      <v-text-field v-model="search" prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
+    </div>
     <v-btn color="success" @click="newDialog = true" class="ml-5">Add New Employee</v-btn>
     <v-btn color="primary" class="ml-5" @click="newAccountDialog = true">Create Account</v-btn>
     <v-dialog v-model="newAccountDialog" max-width="600">
@@ -23,12 +19,12 @@
             </v-row>
             <v-row>
               <v-col>
-                <v-text-field v-model="newLogin.login_password" label="Password"></v-text-field>
+                <v-text-field  :type="'password'" v-model="newLogin.login_password" label="Password"></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
-                <v-autocomplete return-object item-title="employee_firstname"  v-model="newLogin.employee" :items="this.employees">
+                <v-autocomplete label="Employee" return-object item-title="employee_firstname"  v-model="newLogin.employee" :items="this.employees">
 
                 </v-autocomplete>
               </v-col>

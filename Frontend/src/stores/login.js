@@ -23,10 +23,10 @@ export const useLoginStore = defineStore({
                 const response = await axios.post("http://localhost:5000/check_login",  {"login_username": username, "login_password": password})
                 const canLogin = response.data
                 if (canLogin.authorized) {
-                    localStorage.setItem('user', JSON.stringify( {"username": username, "password": password}));
+                    localStorage.setItem('user', JSON.stringify( {"username": username, "password": password, "employee_id": canLogin.employee_id}));
                     // redirect to inventory page
                     router.push(this.returnUrl || '/inventory');
-                    this.user = {"username": username, "password": password};
+                    this.user = {"username": username, "employee_id": canLogin.employee_id};
                     return true
                 } else {
                     console.log("invalid credentials")

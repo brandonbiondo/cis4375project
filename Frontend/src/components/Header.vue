@@ -21,7 +21,7 @@
                 </div>
                 <span>Employees</span>
               </v-btn >
-              <v-btn v-if="isLoggedIn">
+              <v-btn v-if="isLoggedIn" :to="{name: 'Vendor'}">
                 <div class="d-flex mr-1">
                   <v-icon icon="mdi-cart"></v-icon>
                 </div>

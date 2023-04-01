@@ -2,7 +2,10 @@
   <div>
     <v-row>
       <v-col>
-        <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" />
+
+        <div class="d-flex align-self-center mt-3 justify-center" id="searchDiv">
+          <v-text-field v-model="search" prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
+        </div>
       </v-col>
       <!-- Button to add a new vendor -->
       <v-col>
@@ -19,12 +22,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(vendor, index) in vendors" :key="index">
+        <tr v-for="(vendor, index) in filteredVendors" :key="index">
           <td>{{ vendor.vendor_name }}</td>
           <td>{{ vendor.vendor_phone }}</td>
           <td>
-            <v-icon small class="mr-2" @click="editVendor(vendor)">mdi-pencil</v-icon>
-            <v-icon small class="mr-2" @click="deleteVendor(vendor)">mdi-delete</v-icon>
+            <v-icon small class="mr-2" @click="openEditDialog(index)">mdi-pencil</v-icon>
+            <v-icon small class="mr-2" @click="deleteVendor(index)">mdi-delete</v-icon>
           </td>
         </tr>
       </tbody>
@@ -48,6 +51,23 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="editDialog" max-width="600px">
+      <v-card>
+        <v-card-title>Edit Vendor</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-text-field v-model=this.vendors[editId].vendor_name label="Vendor Name"></v-text-field>
+              <v-text-field v-model="this.vendors[editId].vendor_phone" label="Vendor Phone"></v-text-field>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-1" text @click="editDialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="editVendor(this.vendors[editId])">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -61,50 +81,50 @@ export default {
         { text: "Vendor Phone", value: "vendor_phone" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      vendors: [
-        {
-          vendor_name: "Bukky Enterprise",
-          vendor_phone: "281-552-2582",
-        },
-        {
-         vendor_name: "Bomir Foods",
-         vendor_phone:"931-683-7673",  
-        },
-        {
-         vendor_name: "Spicy World", 
-         vendor_phone:"832-752-8625",  
-        },
-        {
-         vendor_name: "Fesojaye", 
-         vendor_phone:"281-883-7728",  
-        },
-      ],
+      vendors: [],
       dialog: false,
+      editDialog: false,
+      search: "",
       newVendor: {
         vendor_name: "",
         vendor_phone: "",
       },
+      editId: null,
     };
   },
   methods: {
-    editVendor(vendor) {
-      // ... (existing editVendor logic) ...
+    openEditDialog(index) {
+      this.editDialog = true;
+      this.editId = this.vendors.findIndex(x => x.vendor_name === this.filteredVendors[index].vendor_name)
     },
-    deleteVendor(vendor) {
-      // ... (existing deleteVendor logic) ...
+    editVendor(item) {
+      this.vendors.splice(this.editId, 1, item)
+      axios.put("http://localhost:5000/vendor", item, {params: {"vendor_id" :item.vendor_id}})
+      this.editDialog = false;
     },
-    saveNewVendor() {
-      this.vendors.push(this.newVendor);
+    deleteVendor(index) {
+      this.editId = this.vendors.findIndex(x => x.vendor_name === this.filteredVendors[index].vendor_name)
+      axios.delete("http://localhost:5000/vendor", {params: {"vendor_id": this.vendors[this.editId].vendor_id}})
+      this.vendors.splice(this.editId, 1);
+    },
+    async saveNewVendor() {
       this.dialog = false;
+      const response = await axios.post("http://localhost:5000/vendor", this.newVendor)
+      this.vendors.push(response.data);
       this.newVendor = {
         vendor_name: "",
         vendor_phone: "",
       };
     },
   },
+  computed: {
+    filteredVendors() {
+      return this.vendors.filter(p => {
+        return p.vendor_name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+      })},
+  },
   async mounted() {
 const vendorData = await axios.get('http://localhost:5000/vendor');
-console.log(vendorData.data);
 this.vendors = vendorData.data;
 },
 };
