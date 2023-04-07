@@ -3,95 +3,128 @@ import Header from "./components/Header.vue";
 </script>
 
 <template>
-<div class="homepage">
-<head>
-    <span class="store_title">Hisway African Grocery Store</span></head>
-  <body max-width="1000px" class="mx-auto">
-    <div>
-    <div class="Main">
+  <div class="homepage">
+    <head>
+      <span class="store_title">Hisway African Grocery Store</span>
+    </head>
+    <body max-width="1000px" class="mx-auto">
       <div>
-        <p>Grocery Store in Katy<br>Open today until 8:00PM</p>
-        <button class="button" onclick="window.location.href=">GET QUOTE</button>
-        <p class="image"><img src="https://lh3.googleusercontent.com/p/AF1QipNVh7_zlLdspQ1mXFGFsvZdv64oUX9qB0d-q47k=w1080-h608-p-no-v0"></p>
-</div>
-</div>
-    <div class="titles">
-      <h3>TESTIMONIALS</h3></div>
-      <div class="grid-container">
-    <div class="col-sm-4">
-  </div>
-  <div class="col-sm-4">
-  </div>
-  <div class="col-sm-4">
-  </div>
-    </div>
-    <div>
-      <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,3" class="links">WRITE A REVIEW</a>
-      <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,1" class="links">READ MORE</a>
-  </div>
-    <div class="titles">
-      <h3>GALLERY</h3></div>
-     <div class="grid-container">
-      <div class="grid-item">
-        <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipPKz1PFfWK-srKrEnTrTYSKBwLeiTtZ-_SnXvL6#">
-          <img src="https://lh3.googleusercontent.com/p/AF1QipPKz1PFfWK-srKrEnTrTYSKBwLeiTtZ-_SnXvL6=w960-h960-n-o-v1" style="width:300px;height:300px;">
-        </a>
-  </div>
-  <div class="grid-item">
-    <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOCxqi4mvlVybSpt1kn7osBK4n-IEvxB2CUF88E">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipOCxqi4mvlVybSpt1kn7osBK4n-IEvxB2CUF88E=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-    </div>
-    <div class="grid-item">
-      <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipNomBKG0GeMbTiJrA-tjKFPNLaiAQrPwQ5SpfCD">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipNomBKG0GeMbTiJrA-tjKFPNLaiAQrPwQ5SpfCD=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-  </div>
-      <div class="grid-item">
-        <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOlN1C5coX7LhxtGlx2rotbmFd0E5Kn4axCTST7">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipOlN1C5coX7LhxtGlx2rotbmFd0E5Kn4axCTST7=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-  </div>
-  <div class="grid-item">
-    <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipPCx2YAfr6WGRdiA-xyvhzMoZnKFw10oEFYOkRS">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipPCx2YAfr6WGRdiA-xyvhzMoZnKFw10oEFYOkRS=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-    </div>
-    <div class="grid-item">
-      <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOzL77eBO7ru0AEYVyOlOiktMLfceecTPaUSvh8">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipOzL77eBO7ru0AEYVyOlOiktMLfceecTPaUSvh8=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-  </div>
-      <div class="grid-item">
-        <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipNbqIZWnsQgYUQEx6e05Z3jyp6PE0p4zGCzutDj">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipNbqIZWnsQgYUQEx6e05Z3jyp6PE0p4zGCzutDj=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-  </div>
-  <div class="grid-item">
-    <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOssy02-DQavUtlA-JTmd25GIn-dkgGH_AJ2pni">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipOssy02-DQavUtlA-JTmd25GIn-dkgGH_AJ2pni=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-    </div>
-    <div class="grid-item">
-      <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOviEoODp5ALa751KGQqENaK5dQjp0nLwjn8LUH">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipOviEoODp5ALa751KGQqENaK5dQjp0nLwjn8LUH=w960-h960-n-o-v1" style="width:300px;height:300px;">
-    </a>
-  </div>
+        <div class="Main">
+          <div>
+            <p>Grocery Store in Katy<br>Open today until 8:00PM</p>
+            <button class="button" onclick="window.location.href=">GET QUOTE</button>
+            <p class="image"><img src="https://lh3.googleusercontent.com/p/AF1QipNVh7_zlLdspQ1mXFGFsvZdv64oUX9qB0d-q47k=w1080-h608-p-no-v0"></p>
+          </div>
+        </div>
+        <div class="titles">
+          <h3>TESTIMONIALS</h3>
+        </div>
+        <div class="grid-container">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4"></div>
+        </div>
+        <div>
+          <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,3" class="links">WRITE A REVIEW
+          </a>
+          <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,1" class="links">READ MORE
+          </a>
+        </div>
+        <div class="titles">
+          <h3>GALLERY</h3>
+        </div>
+        <div class="grid-container">
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipPKz1PFfWK-srKrEnTrTYSKBwLeiTtZ-_SnXvL6#">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipPKz1PFfWK-srKrEnTrTYSKBwLeiTtZ-_SnXvL6=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOCxqi4mvlVybSpt1kn7osBK4n-IEvxB2CUF88E">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipOCxqi4mvlVybSpt1kn7osBK4n-IEvxB2CUF88E=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipNomBKG0GeMbTiJrA-tjKFPNLaiAQrPwQ5SpfCD">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipNomBKG0GeMbTiJrA-tjKFPNLaiAQrPwQ5SpfCD=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOlN1C5coX7LhxtGlx2rotbmFd0E5Kn4axCTST7">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipOlN1C5coX7LhxtGlx2rotbmFd0E5Kn4axCTST7=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipPCx2YAfr6WGRdiA-xyvhzMoZnKFw10oEFYOkRS">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipPCx2YAfr6WGRdiA-xyvhzMoZnKFw10oEFYOkRS=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOzL77eBO7ru0AEYVyOlOiktMLfceecTPaUSvh8">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipOzL77eBO7ru0AEYVyOlOiktMLfceecTPaUSvh8=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipNbqIZWnsQgYUQEx6e05Z3jyp6PE0p4zGCzutDj">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipNbqIZWnsQgYUQEx6e05Z3jyp6PE0p4zGCzutDj=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOssy02-DQavUtlA-JTmd25GIn-dkgGH_AJ2pni">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipOssy02-DQavUtlA-JTmd25GIn-dkgGH_AJ2pni=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+          <div class="grid-item">
+            <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipOviEoODp5ALa751KGQqENaK5dQjp0nLwjn8LUH">
+              <img src="https://lh3.googleusercontent.com/p/AF1QipOviEoODp5ALa751KGQqENaK5dQjp0nLwjn8LUH=w960-h960-n-o-v1" style="width:300px;height:300px;">
+            </a>
+          </div>
+        </div>
+        <div class="titles">
+          <h3>CONTACT US</h3>
+        </div>
+        <div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3461.441854393516!2d-95.7780879!3d29.8226653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!2sHisway%20African%20Grocery%20Store!5e0!3m2!1sen!2sus!4v1680839791546!5m2!1sen!2sus" width="1000" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div>
+          <div class="coninfo">
+            <div class="contitles">Contact
+            </div>
+            <button class="button" onclick="window.location.href='tel:+1-832-542-2551';">CALL NOW
+            </button><br> 
+            <div class="info">(832)542-2551
+            </div>
+          </div>
+            <div class="coninfo" style="margin-left:50px;">
+              <div class="contitles">Address
+              </div>
+              <button class="button" onclick="window.location.href='https://www.google.com/maps/dir//Hisway+African+Grocery+Store/data=!4m8!4m7!1m0!1m5!1m1!1s0x864127667b37dced:0x1e7bc43b53716dd1!2m2!1d-95.7781103!2d29.822653499999998'">GET DIRECTIONS
+              </button>
+              <div class="info">3507 Paintbrush Dawn Court<br>Katy,TX 77493<br>USA
+              </div>
+            </div>
+          <div class="coninfo" style="margin-left:50px;">
+            <div class="contitles">Business Hours
+            </div><br>
+            <div style="float:left;text-align:left;">
+              <table>
+                <tbody>
+                  <tr><td>Mon:</td><td>10:00AM - 8:00PM</td></tr>
+                  <tr><td>Tue:</td><td>10:00AM - 8:00PM</td></tr>
+                  <tr><td>Wed:</td><td>10:00AM - 8:00PM</td></tr>
+                  <tr><td>Thu:</td><td>10:00AM - 8:00PM</td></tr>
+                  <tr><td>Fri:</td><td>10:00AM - 7:00PM</td></tr>
+                  <tr><td>Sat:</td><td>9:00AM - 8:00PM</td></tr>
+                  <tr><td>Sun:</td><td>Closed</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    <div class="titles">
-      <h3>CONTACT US</h3>
+    </body>
   </div>
-      <div class="coninfo"><div class="contitles">Contact</div>
-      <button class="button" onclick="window.location.href='tel:+1-832-542-2551';">CALL NOW
-                </button><br> <div class="info">(832)542-2551</div></div>
-        <div class="coninfo" style="margin-left:50px;"><div class="contitles">Address</div><button class="button" onclick="window.location.href='https://www.google.com/maps/dir//Hisway+African+Grocery+Store/data=!4m8!4m7!1m0!1m5!1m1!1s0x864127667b37dced:0x1e7bc43b53716dd1!2m2!1d-95.7781103!2d29.822653499999998'">GET DIRECTIONS</button>
-          <div class="info">3507 Paintbrush Dawn Court<br>Katy,TX 77493<br>USA</div></div>
-      <div class="coninfo" style="margin-left:50px;"><div class="contitles">Business Hours</div><br><div style="float:left;text-align:left;"><table><tbody><tr><td>Mon:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Tue:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Wed:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Thu:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Fri:</td><td>10:00AM - 7:00PM</td></tr><tr><td>Sat:</td><td>9:00AM - 8:00PM</td></tr><tr><td>Sun:</td><td>Closed</td></tr></tbody></table>
-      </div>
-      </div>
-    </div>
-</body>
-</div>
 </template>
 
 <style>
@@ -157,7 +190,6 @@ import Header from "./components/Header.vue";
   margin-bottom:15px;
 }
 .coninfo{
-  display: inline-block;
   float: left;
   width: 250px;
   margin-top: 15px;
