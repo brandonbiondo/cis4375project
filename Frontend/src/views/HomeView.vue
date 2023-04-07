@@ -11,12 +11,12 @@ import Header from "./components/Header.vue";
     <div class="Main">
       <div>
         <p>Grocery Store in Katy<br>Open today until 8:00PM</p>
-        <button class="button">GET QUOTE</button>
+        <button class="button" onclick="window.location.href=">GET QUOTE</button>
         <p class="image"><img src="https://lh3.googleusercontent.com/p/AF1QipNVh7_zlLdspQ1mXFGFsvZdv64oUX9qB0d-q47k=w1080-h608-p-no-v0"></p>
 </div>
 </div>
     <div class="titles">
-      <h3>TESTIMONIALS</h3>
+      <h3>TESTIMONIALS</h3></div>
       <div class="grid-container">
     <div class="col-sm-4">
   </div>
@@ -25,11 +25,12 @@ import Header from "./components/Header.vue";
   <div class="col-sm-4">
   </div>
     </div>
+    <div>
       <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,3" class="links">WRITE A REVIEW</a>
       <a href="https://www.google.com/search?hl=en-US&gl=us&q=Hisway+African+Grocery+Store,+3507+Paintbrush+Dawn+Ct,+Katy,+TX+77493&ludocid=2196565002355305937&lsig=AB86z5VTmhcTAe3N-Wg0DsFynK9t#lrd=0x864127667b37dced:0x1e7bc43b53716dd1,1" class="links">READ MORE</a>
   </div>
     <div class="titles">
-      <h3>GALLERY</h3>
+      <h3>GALLERY</h3></div>
      <div class="grid-container">
       <div class="grid-item">
         <a href="https://www.google.com/maps/uv?pb=!1s0x864127667b37dced%3A0x1e7bc43b53716dd1!3m1!7e131!4s!5sHisway%20African%20Grocery%20Store!15sCgIgAQ&hl=en&imagekey=!1e10!2sAF1QipPKz1PFfWK-srKrEnTrTYSKBwLeiTtZ-_SnXvL6#">
@@ -77,13 +78,18 @@ import Header from "./components/Header.vue";
     </a>
   </div>
       </div>
-  </div>
     <div class="titles">
-    <div>
-      <h3>CONTACTS</h3>
+      <h3>CONTACT US</h3>
+  </div>
+      <div class="coninfo"><div class="contitles">Contact</div>
+      <button class="button" onclick="window.location.href='tel:+1-832-542-2551';">CALL NOW
+                </button><br> <div class="info">(832)542-2551</div></div>
+        <div class="coninfo" style="margin-left:50px;"><div class="contitles">Address</div><button class="button" onclick="window.location.href='https://www.google.com/maps/dir//Hisway+African+Grocery+Store/data=!4m8!4m7!1m0!1m5!1m1!1s0x864127667b37dced:0x1e7bc43b53716dd1!2m2!1d-95.7781103!2d29.822653499999998'">GET DIRECTIONS</button>
+          <div class="info">3507 Paintbrush Dawn Court<br>Katy,TX 77493<br>USA</div></div>
+      <div class="coninfo" style="margin-left:50px;"><div class="contitles">Business Hours</div><br><div style="float:left;text-align:left;"><table><tbody><tr><td>Mon:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Tue:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Wed:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Thu:</td><td>10:00AM - 8:00PM</td></tr><tr><td>Fri:</td><td>10:00AM - 7:00PM</td></tr><tr><td>Sat:</td><td>9:00AM - 8:00PM</td></tr><tr><td>Sun:</td><td>Closed</td></tr></tbody></table>
+      </div>
+      </div>
     </div>
-  </div>
-  </div>
 </body>
 </div>
 </template>
@@ -107,11 +113,9 @@ import Header from "./components/Header.vue";
   background-color: #5f9bce;
   font-size: 17px;
   height: 60px;
-  width: 190px;
-  display: inline-block;
+  width: 250px;
   font-family: "Open Sans",sans-serif;
   border:none;
-  margin: 15px;
 }
 .store_title {
   font-family: "Abril FatFace",serif;
@@ -122,6 +126,7 @@ import Header from "./components/Header.vue";
 .image {
   text-align: center;
   display: block;
+  padding: 15px
 }
 .titles{
   font-family: "Open Sans",sans-serif;
@@ -138,5 +143,24 @@ import Header from "./components/Header.vue";
   padding-bottom: 8px;
   text-align: center;
   text-decoration: none;
+}
+.info {
+  font-family: "Open Sans",sans-serif;
+  font-size: 16px;
+  text-align: left;
+  margin-top: 15px;
+}
+.contitles{
+  font-size:20px;
+  font-weight:bold;
+  float:left;
+  margin-bottom:15px;
+}
+.coninfo{
+  display: inline-block;
+  float: left;
+  width: 250px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 </style>
