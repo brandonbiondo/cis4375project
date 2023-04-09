@@ -117,3 +117,11 @@ class Reorder(Base):
     
     product = relationship("Product", back_populates="reorder")
     inventory = relationship("Inventory", back_populates="reorder")
+
+class Quote(Base):
+    __tablename__ = 'quote'
+    quote_id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50))
+    phone = Column(String(25))
+    email = Column(String(30))
+    message = Column(String(250))
