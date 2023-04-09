@@ -27,7 +27,12 @@
                 </div>
                 <span>Vendors</span>
               </v-btn>
-
+                <v-btn variant="text" :to="{name: 'quote'}">
+                    <div class="d-flex mr-1">
+                        <v-icon icon="mdi-note"></v-icon>
+                    </div>
+                    <span>Get Quote</span>
+                </v-btn>
                 <v-btn variant="text" href="tel:+1-832-542-2551">
                     <div class="d-flex mr-1">
                         <v-icon icon="mdi-phone"></v-icon>
@@ -58,10 +63,12 @@
 <script>
 import Login from "@/views/Login.vue";
 import {useLoginStore} from "../stores/login";
+import Quote from "@/views/Quote.vue";
 
 export default {
     components: {
-        Login
+        Login,
+        Quote
     },
         data() {
             return {
