@@ -48,6 +48,7 @@ def add_quote():
     add_quote_sql = f"INSERT INTO quote (name, phone, email, message) VALUES ('{name}', '{phone}', '{email}', '{message}')"
     session.execute(text(add_quote_sql)) # execute the sql code from above and commit the changes using the next line 
     session.commit()
+    return 'POST request was successful'  #receipt
     # This endpoint will allow the user to POST a new quote into the quote table of the sql database.
 
 
