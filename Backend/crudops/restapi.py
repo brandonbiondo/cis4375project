@@ -12,6 +12,48 @@ bp = Blueprint('api', __name__)
 #
 #
 #
+# quote CRUD operations
+#
+#
+#
+
+@bp.route('/quote', methods=['GET'])
+def get_quote():
+    engine, session = connect_to_db()
+    quotes = session.query(Quote).all()
+    if quotes:
+        quote_list = [
+            {
+                'quote_id': quote.quote_id,
+                'name': quote.name,
+                'phone': quote.phone,
+                'email': quote.email,
+                'message': quote.message
+            } 
+            for quote in quotes
+        ]
+        return jsonify(quote_list)
+    else:
+        return jsonify({'error': 'Quotes not found'}), 404
+
+
+# endpoint to add quote as POST
+@bp.route('/quote', methods=['POST'])  # set endpoint information for API
+def add_quote():
+    engine, session = connect_to_db()
+    name = request.json['name']
+    phone = request.json['phone']
+    email = request.json['email']
+    message = request.json['message']
+    add_quote_sql = f"INSERT INTO quote (name, phone, email, message) VALUES ('{name}', '{phone}', '{email}', '{message}')"
+    session.execute(text(add_quote_sql)) # execute the sql code from above and commit the changes using the next line 
+    session.commit()
+    # This endpoint will allow the user to POST a new quote into the quote table of the sql database.
+
+
+#
+#
+#
 # vendors CRUD operations
 #
 #
@@ -42,7 +84,7 @@ def add_vendor():
     vendor_name = request.json['vendor_name']
     vendor_phone = request.json['vendor_phone']
     add_vendor_sql = f"INSERT INTO vendor (vendor_name, vendor_phone) VALUES ('{vendor_name}', '{vendor_phone}')"
-    result = session.execute(text(add_vendor_sql)) # execute the sql code from above and commit the changes using the next line 
+    session.execute(text(add_vendor_sql)) # execute the sql code from above and commit the changes using the next line 
     session.commit()
     vendor_dict = request.json
     vendor_dict["vendor_id"] = result.lastrowid
