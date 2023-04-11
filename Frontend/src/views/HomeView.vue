@@ -96,7 +96,7 @@
             </v-col>
             <v-col cols="auto">
               <h3 style="font-size: 20px"> Address </h3>
-                <v-btn variant="text" href="https://www.google.com/maps/dir//Hisway+African+Grocery+Store/data=!4m8!4m7!1m0!1m5!1m1!1s0x864127667b37dced:0x1e7bc43b53716dd1!2m2!1d-95.7781103!2d29.822653499999998">
+                <v-btn @click="window.location.href='https://www.google.com/maps/dir//Hisway+African+Grocery+Store/data=!4m8!4m7!1m0!1m5!1m1!1s0x864127667b37dced:0x1e7bc43b53716dd1!2m2!1d-95.7781103!2d29.822653499999998'" variant="text">
                     <div class="d-flex mr-1">
                         <v-icon icon="mdi-directions"></v-icon>
                     </div>
