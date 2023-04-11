@@ -13,13 +13,13 @@
     </div>
     <br>
     <div class='main'>
-    <img src = 'https://lh3.googleusercontent.com/p/AF1QipNVh7_zlLdspQ1mXFGFsvZdv64oUX9qB0d-q47k=w1080-h608-p-no-v0'>
+    <img referrerpolicy="no-referrer" src = 'https://lh3.googleusercontent.com/p/AF1QipNVh7_zlLdspQ1mXFGFsvZdv64oUX9qB0d-q47k=w1080-h608-p-no-v0'>
     </div>
     <br>
     <h1> Updates </h1>
     <div class="category-list">
       <div class="category" v-for="category in categories" :key="category.id">
-        <img :src="category.image" alt="category.name">
+        <img :src="category.image" referrerpolicy="no-referrer" alt="category.name">
         <div class="category-name">{{ category.name }}</div>
         <div class="description">{{category.description}}</div>
       </div> 
@@ -69,7 +69,7 @@
      <h1> Gallery </h1>
       <div class="food-list">
       <div class="food" v-for="food in foods" :key="food.id">
-        <img :src="food.image" alt="food.name">
+        <img :src="food.image" referrerpolicy="no-referrer" alt="food.name">
       </div>      
 
       </div>
@@ -77,7 +77,7 @@
     <h1> Contact Us </h1>
     <br>
       <div style="text-align: center;">
-        <img src="https://scontent-dfw5-2.xx.fbcdn.net/v/t39.30808-6/229505446_10165334602810277_990418285611305810_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=e3f864&_nc_ohc=8KvYAs7YvukAX_2jh8x&_nc_ht=scontent-dfw5-2.xx&oh=00_AfCETTTREROhvlYgWCOCKR2IseXeEjqWccox91KE3RB88Q&oe=64357818" 
+        <img referrerpolicy="no-referrer" src="https://scontent-dfw5-2.xx.fbcdn.net/v/t39.30808-6/229505446_10165334602810277_990418285611305810_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=e3f864&_nc_ohc=8KvYAs7YvukAX_2jh8x&_nc_ht=scontent-dfw5-2.xx&oh=00_AfCETTTREROhvlYgWCOCKR2IseXeEjqWccox91KE3RB88Q&oe=64357818" 
         alt="Hisway_logo" :style="{ width: imageSize + 'px', height: 'auto' , }">
       </div>
       <br>
