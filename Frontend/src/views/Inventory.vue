@@ -5,6 +5,7 @@ export default {
     },
     data() {
         return {
+            filterValue: "Product Name",
             inventory: [],
             products: [],
             stores: [],
@@ -139,9 +140,27 @@ export default {
     },
     computed: {
         filteredInventory() {
+            if (this.filterValue == "Product Name") {
             return this.inventory.filter(p => {
                 return p.product_name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-            })},
+            })
+        } else if (this.filterValue == "Vendor") {
+            return this.inventory.filter(p => {
+                return p.vendor_name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }
+            )
+        } else if (this.filterValue == "Category") {
+            return this.inventory.filter(p => {
+                return p.category_name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }
+            )
+        } else if (this.filterValue == "Low Quantity") {
+            return this.inventory.filter(p => {
+                return p.item_quantity < p.reorder_level;
+            }
+            )
+        }
+        } ,
     },
 }
 </script>
@@ -149,6 +168,33 @@ export default {
 <template>
     <div class="d-flex align-self-center mt-3" id="searchDiv">
         <v-text-field v-model="search" prepend-icon="mdi-magnify" variant="underlined" label="Search"></v-text-field>
+        <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn variant="underlined" v-bind="props" icon="mdi-filter" ></v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+        >
+          <v-btn variant="text" @click="this.filterValue = 'Product Name'">Product Name</v-btn>
+          
+           
+        </v-list-item>
+        <v-list-item>
+            <v-btn variant="text" @click="this.filterValue = 'Vendor'">Vendor</v-btn>
+        </v-list-item>
+        <v-list-item>
+            <v-btn variant="text" @click="this.filterValue = 'Category'">Category</v-btn>
+        </v-list-item>
+        <v-list-item>
+            <v-btn variant="text" @click="this.filterValue = 'Low Quantity'">Low Quantity</v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <div class="d-flex pt-2">
+
+   
+    <v-chip>Current Filter: {{ this.filterValue }}</v-chip>
+    </div>
     </div>
     <div class="d-flex justify-center" v-if="!inventoryLoaded">
         <v-progress-circular indeterminate model-value="20"></v-progress-circular>
@@ -156,21 +202,22 @@ export default {
     <div class="d-flex" v-if="this.inventory.length != 0">
         <v-card max-width="1000px" class="mx-auto">
             <v-container>
-                <v-row dense v-for="(item, index) in filteredInventory">
-                    <v-col cols="12">
-                        <v-card elevation="3" min-width="800px" min-height="200px" max-height="400px">
+                <v-row >
+                    <v-col v-for="(item, index) in filteredInventory">
+                        <v-card elevation="3"  min-width="300px" max-width="300px"  max-height="500px">
                             <v-row>
-                                <v-col>
+                                <v-col cols="30">
                                     <v-card-title>
                                         <div class="d-flex">
                                             <h3>
                                                 {{ item.product_name }}
                                             </h3>
                                             <div>
-                                                <v-icon color="blue" size="x-small" v-if="item.item_quantity < item.reorder_level">
+                                                <v-icon color="red-lighten-1" size="x-small" v-if="item.item_quantity < item.reorder_level">
                                                     mdi-flag
                                                 </v-icon>
-                                            </div>
+
+                                            </div>  
                                         </div>
                                     </v-card-title>
                                     <v-card-subtitle>
@@ -234,6 +281,7 @@ export default {
                                     </div>
                                 </v-col>
                             </v-row>
+                            
 
 
 
@@ -264,11 +312,13 @@ export default {
                                         </div>
                                     </div>
                                 </v-card-text>
+                            </div>
+                            <v-card-text>
                                 <v-btn variant="text" color="blue" icon="mdi-pencil" @click="updateInventoryDialog(index)">
                                 </v-btn>
                                 <v-btn variant="text" color="red" icon="mdi-delete-outline" @click="deleteInventory(index)">
                                 </v-btn>
-                            </div>
+                            </v-card-text>
                         </v-card>
                     </v-col>
                 </v-row>
