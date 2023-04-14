@@ -62,7 +62,7 @@
           <td>{{ employee.employee_startdate }}</td>
           <td>{{ employee.employee_enddate }}</td>
           <td>
-            <v-icon v-if="!employee.employee_endDate" color="green">mdi-check</v-icon>
+            <v-icon v-if="!employee.employee_enddate" color="green">mdi-check</v-icon>
             <v-icon v-else color="red">mdi-close</v-icon>
           </td>
           <td>
