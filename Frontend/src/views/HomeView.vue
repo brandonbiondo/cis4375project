@@ -77,7 +77,7 @@
     <h1> Contact Us </h1>
     <br>
       <div style="text-align: center;">
-        <img referrerpolicy="no-referrer" src="https://scontent-dfw5-2.xx.fbcdn.net/v/t39.30808-6/229505446_10165334602810277_990418285611305810_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=e3f864&_nc_ohc=8KvYAs7YvukAX_2jh8x&_nc_ht=scontent-dfw5-2.xx&oh=00_AfCETTTREROhvlYgWCOCKR2IseXeEjqWccox91KE3RB88Q&oe=64357818" 
+        <img referrerpolicy="no-referrer" src="src/assets/hisway_logo.jpg" 
         alt="Hisway_logo" :style="{ width: imageSize + 'px', height: 'auto' , }">
       </div>
       <br>
