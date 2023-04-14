@@ -125,3 +125,12 @@ class Quote(Base):
     phone = Column(String(25))
     email = Column(String(30))
     message = Column(String(250))
+
+class AuditLog(Base):
+    __tablename__ = 'auditlog'
+    audit_log_id = Column(Integer, primary_key=True, autoincrement=True)
+    item_name = Column(String(50))
+    date = Column(Date)
+    crud_operation = Column(String(10))
+    table = Column(String(25))
+    user = Column(String(30))
